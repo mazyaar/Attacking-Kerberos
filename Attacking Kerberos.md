@@ -12,7 +12,7 @@ The AS-REQ step in Kerberos authentication starts when a user requests a **TGT**
 
 In order to understand how the service tickets get created and validated, we need to start with where the tickets come from; the **TGT** is provided by the user to the KDC, in return, the KDC validates the **TGT** and returns a service ticket.
 
-![](https://i.imgur.com/QFeXDN0.png)![1728288329332](image/AttackingKerberos/1728288329332.png)
+![1728288329332](image/AttackingKerberos/1728288329332.png)
 
 ### Service Ticket Contents -
 
@@ -21,7 +21,7 @@ To understand how Kerberos authentication works you first need to understand wha
 * Service Portion: User Details, Session Key, Encrypts the ticket with the service account **NTLM** hash.
 * User Portion: Validity Timestamp, Session Key, Encrypts with the **TGT** session key.
 
-![](https://i.imgur.com/kUqrVBa.png)![1728288412824](image/AttackingKerberos/1728288412824.png)
+![1728288412824](image/AttackingKerberos/1728288412824.png)
 
 ### **Kerberos** Authentication Overview -
 
