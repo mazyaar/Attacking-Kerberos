@@ -12,4 +12,4 @@ This document will be related to very real-world applications and will most like
 
 It is recommended to have knowledge of general post-exploitation, active directory basics, and windows command line to be successful with this document.
 
-![](https://i.imgur.com/2dq2jLY.png)![1728288300327](image/AttackingKerberos/1728288300327.png)
+![1728288300327](image/AttackingKerberos/1728288300327.png)
