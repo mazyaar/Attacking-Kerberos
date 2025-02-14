@@ -1,5 +1,7 @@
 # Attacking Kerberos
 
+![1728288300327](image/AttackingKerberos/1728288300327.png)
+
 * **Service Long Term Secret Key (Service LT Key)** - The service key is based on the service account. It is used to encrypt the service portion of the service ticket and sign the PAC.
 * **Session Key** - Issued by the KDC when a **TGT** is issued. The user will provide the session key to the KDC along with the **TGT** when requesting a service ticket.
 * **Privilege Attribute Certificate (PAC)** - The PAC holds all of the user's relevant information, it is sent along with the **TGT** to the KDC to be signed by the Target LT Key and the KDC LT Key in order to validate the user.
@@ -25,7 +27,7 @@ To understand how Kerberos authentication works you first need to understand wha
 
 ### **Kerberos** Authentication Overview -
 
-![](https://i.imgur.com/VRr2B6w.png)![1728288440343](image/AttackingKerberos/1728288440343.png)
+![1728288440343](image/AttackingKerberos/1728288440343.png)
 
 **AS-REQ:** - 1.) The client requests an Authentication Ticket or Ticket Granting Ticket (**TGT**).
 
@@ -49,13 +51,13 @@ When the user needs to request a service ticket, they will send the **TGT** and 
 
 ### Attack Privilege Requirements -
 
-* Kerbrute Enumeration - No domain access required
-* Pass the Ticket - Access as a user to the domain required
-* Kerberoasting - Access as any user required
-* AS-REP Roasting - Access as any user required
-* Golden Ticket - Full domain compromise (domain admin) required
-* Silver Ticket - Service hash required
-* Skeleton Key - Full domain compromise (domain admin) required
+* **Kerbrute Enumeration - No domain access required**
+* **Pass the Ticket - Access as a user to the domain required**
+* **Kerberoasting - Access as any user required**
+* **AS-REP Roasting - Access as any user required**
+* **Golden Ticket - Full domain compromise (domain admin) required**
+* **Silver Ticket - Service hash required**
+* **Skeleton Key - Full domain compromise (domain admin) required**
 
 ## Enumeration w/ Kerbrute
 
@@ -69,7 +71,7 @@ You need to add the **DNS** domain name along with the machine IP to /etc/hosts 
 
 By brute-forcing Kerberos pre-authentication, you do not trigger the account failed to log on event which can throw up red flags to blue teams. When brute-forcing through Kerberos you can brute-force by only sending a single **UDP** frame to the KDC allowing you to enumerate the users on the domain from a wordlist.
 
-![1728288452432](image/AttackingKerberos/1728288452432.png)![](https://i.imgur.com/2IomUnH.jpg)
+![1728288452432](image/AttackingKerberos/1728288452432.png)
 
 ### Kerbrute Installation -
 
@@ -89,21 +91,11 @@ Enumerating users allows you to know which user accounts are on the target domai
 
 3.) `<span>./kerbrute userenum --dc CONTROLLER.local -d CONTROLLER.local User.txt</span>` - This will brute force user accounts from a domain controller using a supplied wordlist
 
-![](https://i.imgur.com/fSDrhyb.png)![1728288484634](image/AttackingKerberos/1728288484634.png)
+![](image/AttackingKerberos/1728288484634.png)
 
 Now enumerate on your own and find the rest of the users and more importantly service accounts.
 
 ## Harvesting & Brute-Forcing Tickets w/ Rubeus
-
-To start this task you will need to **RDP** or **SSH** into the machine your credentials are -
-
-Username: Administrator
-
-Password: P@$$W0rd
-
-Domain: controller.local
-
-Your Machine IP is `<span>10.10.142.3</span>`
 
 Rubeus is a powerful tool for attacking **Kerberos**. Rubeus is an adaptation of the kekeo tool and developed by HarmJ0y the very well known active directory guru.
 
@@ -111,9 +103,7 @@ Rubeus has a wide variety of attacks and features that allow it to be a very ver
 
 The tool has way too many attacks and features for me to cover all of them so I'll be covering only the ones I think are most crucial to understand how to attack Kerberos however I encourage you to research and learn more about Rubeus and its whole host of attacks and features here - [https://github.com/GhostPack/Rubeus](https://github.com/GhostPack/Rubeus)
 
-Rubeus is already compiled and on the target machine.
-
-![1728288508144](image/AttackingKerberos/1728288508144.png)![](https://i.imgur.com/2KTvdDp.png)
+![1728288508144](image/AttackingKerberos/1728288508144.png)
 
 ### Harvesting Tickets w/ Rubeus -
 
@@ -123,7 +113,7 @@ Harvesting gathers tickets that are being transferred to the KDC and saves them 
 
 2.) `<span>Rubeus.exe harvest /interval:30</span>` - This command tells Rubeus to harvest for TGTs every 30 seconds
 
-![](https://i.imgur.com/VCeyyn9.png)![1728288527305](image/AttackingKerberos/1728288527305.png)
+![1728288527305](image/AttackingKerberos/1728288527305.png)
 
 ### Brute-Forcing / Password-Spraying w/ Rubeus -
 
@@ -139,7 +129,7 @@ Before password spraying with Rubeus, you need to add the domain controller doma
 
 2.) `Rubeus.exe brute /password:Password1 /noticket` - This will take a given password and "spray" it against all found users then give the .kirbi **TGT** for that user
 
-![](https://i.imgur.com/WN4zVo5.png)![1728288538721](image/AttackingKerberos/1728288538721.png)
+![1728288538721](image/AttackingKerberos/1728288538721.png)
 
 Be mindful of how you use this attack as it may lock you out of the network depending on the account lockout policies.
 
@@ -149,9 +139,7 @@ Be mindful of how you use this attack as it may lock you out of the network depe
 
 In order to perform the attack, we'll be using both Rubeus as well as Impacket so you understand the various tools out there for Kerberoasting. There are other tools out there such a kekeo and Invoke-Kerberoast but I'll leave you to do your own research on those tools.
 
-I have already taken the time to put Rubeus on the machine for you, it is located in the downloads folder.
-
-![](https://i.imgur.com/Mtl9O6B.png)![1728288561343](image/AttackingKerberos/1728288561343.png)
+![1728288561343](image/AttackingKerberos/1728288561343.png)
 
 ### Method 1 - Rubeus
 
@@ -218,7 +206,7 @@ I have already compiled and put Rubeus on the machine.
 
 During pre-authentication, the users hash will be used to encrypt a timestamp that the domain controller will attempt to decrypt to validate that the right hash is being used and is not replaying a previous request. After validating the timestamp the KDC will then issue a **TGT** for the user. If pre-authentication is disabled you can request any authentication data for any user and the KDC will return an encrypted **TGT** that can be cracked offline because the KDC skips the step of validating that the user is really who they say that they are.
 
-![](https://i.imgur.com/arAImcA.png)![1728288803034](image/AttackingKerberos/1728288803034.png)
+![1728288803034](image/AttackingKerberos/1728288803034.png)
 
 ### Dumping KRBASREP5 Hashes w/ Rubeus -
 
@@ -226,7 +214,7 @@ During pre-authentication, the users hash will be used to encrypt a timestamp th
 
 2.) `<span>Rubeus.exe asreproast</span>` - This will run the AS-REP roast command looking for vulnerable users and then dump found vulnerable user hashes.
 
-![](https://i.imgur.com/l3wJhby.png)![1728288824045](image/AttackingKerberos/1728288824045.png)
+![1728288824045](image/AttackingKerberos/1728288824045.png)
 
 ### Crack those Hashes w/ hashcat -
 
@@ -257,7 +245,7 @@ You can run this attack on the given machine however you will be escalating from
 
 Pass the ticket works by dumping the TGT from the LSASS memory of the machine. The Local Security Authority Subsystem Service (LSASS) is a memory process that stores credentials on an active directory server and can store Kerberos ticket along with other credential types to act as the gatekeeper and accept or reject the credentials provided. You can dump the Kerberos Tickets from the LSASS memory just like you can dump hashes. When you dump the tickets with mimikatz it will give us a .kirbi ticket which can be used to gain domain admin if a domain admin ticket is in the LSASS memory. This attack is great for privilege escalation and lateral movement if there are unsecured domain service account tickets laying around. The attack allows you to escalate to domain admin if you dump a domain admin's ticket and then impersonate that ticket using mimikatz PTT attack allowing you to act as that domain admin. You can think of a pass the ticket attack like reusing an existing ticket were not creating or destroying any tickets here were simply reusing an existing ticket from another user on the domain and impersonating that ticket.
 
-![1728288859111](image/AttackingKerberos/1728288859111.png)![](https://i.imgur.com/V6SOlll.png)
+![1728288859111](image/AttackingKerberos/1728288859111.png)
 
 ### Prepare Mimikatz & Dump Tickets -
 
@@ -269,7 +257,7 @@ You will need to run the command prompt as an administrator: use the same creden
 
 3.) `<span>privilege::debug</span>` - Ensure this outputs [output '20' OK] if it does not that means you do not have the administrator privileges to properly run mimikatz
 
-![](https://i.imgur.com/SJQGplV.png)![1728288869169](image/AttackingKerberos/1728288869169.png)
+![1728288869169](image/AttackingKerberos/1728288869169.png)
 
 4.) `<span>sekurlsa::tickets /export</span>` - this will export all of the .kirbi tickets into the directory that you are currently in
 
@@ -285,17 +273,17 @@ Now that we have our ticket ready we can now perform a pass the ticket attack to
 
 1.) `<span>kerberos::ptt <ticket></span>` - run this command inside of mimikatz with the ticket that you harvested from earlier. It will cache and impersonate the given ticket
 
-![](https://i.imgur.com/DwXmm8Z.png)![1728288883636](image/AttackingKerberos/1728288883636.png)
+![1728288883636](image/AttackingKerberos/1728288883636.png)
 
 2.) `<span>klist</span>` - Here were just verifying that we successfully impersonated the ticket by listing our cached tickets.
 
 We will not be using mimikatz for the rest of the attack.
 
-![](https://i.imgur.com/GgxDm9k.png)![1728288917855](image/AttackingKerberos/1728288917855.png)
+![1728288917855](image/AttackingKerberos/1728288917855.png)
 
 3.) You now have impersonated the ticket giving you the same rights as the TGT you're impersonating. To verify this we can look at the admin share.
 
-![](https://i.imgur.com/9nxjeTS.png)![1728288925650](image/AttackingKerberos/1728288925650.png)
+![1728288925650](image/AttackingKerberos/1728288925650.png)
 
 Note that this is only a POC to understand how to pass the ticket and gain domain admin the way that you approach passing the ticket may be different based on what kind of engagement you're in so do not take this as a definitive guide of how to run this attack.
 
@@ -321,7 +309,7 @@ In order to fully understand how these attacks work you need to understand what 
 
 A golden ticket attack works by dumping the ticket-granting ticket of any user on the domain this would preferably be a domain admin however for a golden ticket you would dump the krbtgt ticket and for a silver ticket, you would dump any service or domain admin ticket. This will provide you with the service/domain admin account's SID or security identifier that is a unique identifier for each user account, as well as the NTLM hash. You then use these details inside of a mimikatz golden ticket attack in order to create a **TGT** that impersonates the given service account information.
 
-![](https://i.imgur.com/GT1kkfo.png)![1728289010642](image/AttackingKerberos/1728289010642.png)
+![1728289010642](image/AttackingKerberos/1728289010642.png)
 
 ### Dump the krbtgt hash -
 
@@ -339,17 +327,17 @@ A golden ticket attack works by dumping the ticket-granting ticket of any user o
 
 I'll show you a demo of creating a golden ticket it is up to you to create a silver ticket.
 
-![](https://i.imgur.com/rh06qDl.png)![1728289033225](image/AttackingKerberos/1728289033225.png)
+![1728289033225](image/AttackingKerberos/1728289033225.png)
 
 ### Use the Golden/Silver Ticket to access other machines -
 
 ﻿1.) `<span>misc::cmd</span>` - this will open a new elevated command prompt with the given ticket in mimikatz.
 
-![](https://i.imgur.com/6HnEnwi.png)![1728289043708](image/AttackingKerberos/1728289043708.png)
+![1728289043708](image/AttackingKerberos/1728289043708.png)
 
 2.) Access machines that you want, what you can access will depend on the privileges of the user that you decided to take the ticket from however if you took the ticket from krbtgt you have access to the ENTIRE network hence the name golden ticket; however, silver tickets only have access to those that the user has access to if it is a domain admin it can almost access the entire network however it is slightly less elevated from a golden ticket.
 
-![](https://i.imgur.com/BSh4rXy.png)![1728289059953](image/AttackingKerberos/1728289059953.png)
+![1728289059953](image/AttackingKerberos/1728289059953.png)
 
 This attack will not work without other machines on the domain however I challenge you to configure this on your own network and try out these attacks.
 
@@ -367,7 +355,7 @@ This will only be an overview section and will not require you to do anything on
 
 The skeleton key works by abusing the AS-REQ encrypted timestamps as I said above, the timestamp is encrypted with the users NT hash. The domain controller then tries to decrypt this timestamp with the users NT hash, once a skeleton key is implanted the domain controller tries to decrypt the timestamp using both the user NT hash and the skeleton key NT hash allowing you access to the domain forest.
 
-![](https://i.imgur.com/yNI0zEb.png)![1728289078010](image/AttackingKerberos/1728289078010.png)
+![1728289078010](image/AttackingKerberos/1728289078010.png)
 
 ### Preparing Mimikatz -
 
@@ -375,14 +363,13 @@ The skeleton key works by abusing the AS-REQ encrypted timestamps as I said abov
 
 2.) `<span>privilege::debug</span>` - This should be a standard for running mimikatz as mimikatz needs local administrator access
 
-![](https://i.imgur.com/ZPOMDMo.png)![1728289095332](image/AttackingKerberos/1728289095332.png)
+![1728289095332](image/AttackingKerberos/1728289095332.png)
 
 ### Installing the Skeleton Key w/ mimikatz -
 
 1.) `<span>misc::skeleton</span>` - Yes! that's it but don't underestimate this small command it is very powerful
 
-![1728289111955](image/AttackingKerberos/1728289111955.png)![](https://i.imgur.com/wI802gw.png)
-
+![1728289111955](image/AttackingKerberos/1728289111955.png)
 ### Accessing the forest -
 
 The default credentials will be: " *mimikatz* "
